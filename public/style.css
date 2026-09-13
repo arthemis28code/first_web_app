@@ -1,0 +1,16 @@
+body { font-family: Georgia, serif; background: #2b1d10; color: #2b1a10; margin: 0; }
+.sheet { max-width: 430px; margin: 14px auto; background: #f0e6cf; border: 3px double #a07836; border-radius: 10px; min-height: calc(100dvh - 28px); padding: 24px; box-sizing: border-box; }
+.eyebrow { text-transform: uppercase; letter-spacing: .25em; font-size: 11px; opacity: .6; text-align: center; }
+h1 { font-size: 28px; text-align: center; margin: 8px 0; }
+p { line-height: 1.55; }
+button.cta { display: block; margin: 20px auto 0; padding: 12px 28px; font-size: 17px; border-radius: 999px; border: none; background: #2b1a10; color: #f0e6cf; cursor: pointer; }
+button.ghost { background: transparent; border: 1px solid #2b1a10; color: #2b1a10; border-radius: 999px; padding: 6px 14px; cursor: pointer; font-size: 13px; }
+.card { border: 1px solid rgba(43,26,16,.35); border-radius: 8px; padding: 12px; margin: 12px 0; background: rgba(255,255,255,.4); }
+.cat { display: flex; gap: 10px; align-items: center; background: rgba(255,255,255,.6); border-radius: 16px; padding: 10px 14px; margin-top: 16px; font-style: italic; }
+.topbar { display: flex; justify-content: space-between; margin-bottom: 12px; }
+img.preview { width: 100%; border-radius: 6px; border: 1px solid rgba(0,0,0,.2); margin-top: 8px; }
+.welcome { text-align: center; }
+.welcome .cover { font-size: 64px; }
+input[type=file] { margin-top: 10px; }
+.progressbar { height: 12px; border: 1px solid #2b1a10; border-radius: 999px; overflow: hidden; }
+.progressbar > div { height: 100%; background: #2b1a10; }
