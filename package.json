@@ -1,0 +1,13 @@
+{
+  "name": "first-web-app",
+  "version": "1.0.0",
+  "description": "Simple Node web app",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
