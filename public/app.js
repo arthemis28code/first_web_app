@@ -93,6 +93,16 @@ function render() {
         <button class="cta" onclick="nextFromStory()">${state.index >= treasures.length-1 ? 'Finish quest' : 'Next treasure'}</button>`);
       break;
     }
+    case 'map': {
+      el(`${topbar()}
+        <p class="eyebrow">Our journey</p><h1>Completion map</h1>
+        <p style="text-align:center">${treasures.filter(x => state.photos[x.id]).length} / ${treasures.length} spots found</p>
+        <div id="quest-map" class="map"></div>
+        <div class="legend"><span class="dot done"></span> found &nbsp;<span class="dot todo"></span> to find</div>
+        <p style="text-align:center"><button class="cta" onclick="nav('compass',${Math.min(state.index, treasures.length-1)})">Back to quest</button></p>`);
+      drawMap();
+      break;
+    }
     case 'progress': {
       const found = state.index; // just found index-1, now pointing at next
       const pct = Math.round(found / treasures.length * 100);
@@ -101,6 +111,7 @@ function render() {
         <h1>Found ${found} / ${treasures.length}!</h1>
         <div class="progressbar"><div style="width:${pct}%"></div></div>
         <div class="card">Next: <b>${t.title}</b> — ${t.neighborhood}</div>
+        <button class="cta" onclick="nav('map')">🗺️ Completion map</button>
         <button class="cta" onclick="nav('compass')">Onward! 🐾</button>`);
       break;
     }
@@ -126,6 +137,30 @@ function render() {
 }
 function setDur(d) { state.config.duration = d; save(); }
 function setSnacks(v) { state.config.snacks = v; save(); }
+function drawMap() {
+  const container = document.getElementById('quest-map');
+  if (!container) return;
+  const visited = new Set(Object.keys(state.photos));
+  const map = L.map('quest-map', { zoomControl: true, attributionControl: true });
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 18,
+  }).addTo(map);
+  treasures.forEach(t => {
+    const done = visited.has(t.id);
+    const icon = L.divIcon({
+      className: '',
+      html: `<div style="width:28px;height:28px;border-radius:50%;background:${done ? '#3a6e3a' : '#f0e6cf'};border:3px solid ${done ? '#f0e6cf' : '#2b1a10'};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;color:${done ? '#f0e6cf' : '#2b1a10'};line-height:1">${t.ordinal}</div>`,
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
+    });
+    const marker = L.marker([t.lat, t.lon], { icon }).addTo(map);
+    const label = `${t.ordinal}. ${t.title}${done ? ' ✅' : ''}`;
+    marker.bindPopup(`<b>${label}</b><br/><small>${t.neighborhood}</small>`);
+  });
+  const bounds = L.latLngBounds(treasures.map(t => [t.lat, t.lon]));
+  map.fitBounds(bounds, { padding: [50, 50] });
+}
 function savePhoto(e) {
   const f = e.target.files[0]; if (!f) return;
   const r = new FileReader();
